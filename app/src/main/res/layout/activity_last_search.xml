@@ -42,23 +42,13 @@
                     android:textSize="16sp" />
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/dialogImgVoice"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
-                    android:layout_gravity="end"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_keyboard_voice" />
-
-                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/dialogImgClose"
                     android:layout_width="43dp"
                     android:layout_height="43dp"
                     android:layout_gravity="end"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_close_dialog"
-                    android:visibility="gone" />
+                    android:src="@drawable/ic_close_dialog"/>
 
             </LinearLayout>
 
