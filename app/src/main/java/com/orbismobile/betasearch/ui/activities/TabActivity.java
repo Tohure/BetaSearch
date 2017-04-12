@@ -1,18 +1,19 @@
 package com.orbismobile.betasearch.ui.activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.orbismobile.betasearch.R;
 import com.orbismobile.betasearch.data.ViewPagerAdapter;
 
-public class TabActivity extends AppCompatActivity {
+public class TabActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
     private EditText txtSearch;
@@ -40,6 +41,7 @@ public class TabActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         txtSearch = (EditText) findViewById(R.id.txtSearch);
+        txtSearch.setOnClickListener(this);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -65,4 +67,9 @@ public class TabActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(TabActivity.this, SearchActivity.class));
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+    }
 }

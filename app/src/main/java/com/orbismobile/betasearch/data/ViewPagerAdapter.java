@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.orbismobile.betasearch.ui.fragments.AppliesFragment;
 import com.orbismobile.betasearch.ui.fragments.MeFragment;
 import com.orbismobile.betasearch.ui.fragments.NotifyFragment;
-import com.orbismobile.betasearch.ui.fragments.SearchsFragment;
+import com.orbismobile.betasearch.ui.fragments.LastSearchsFragment;
 
 /**
  * Created by tohure on 12/04/17.
@@ -15,7 +15,7 @@ import com.orbismobile.betasearch.ui.fragments.SearchsFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private SearchsFragment searchsFragment;
+    private LastSearchsFragment lastSearchsFragment;
     private AppliesFragment appliesFragment;
     private NotifyFragment notifyFragment;
     private MeFragment meFragment;
@@ -24,9 +24,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
-    public SearchsFragment getSearchsFragment() {
-        if (searchsFragment == null) searchsFragment = new SearchsFragment();
-        return searchsFragment;
+    public LastSearchsFragment getLastSearchsFragment() {
+        if (lastSearchsFragment == null) lastSearchsFragment = new LastSearchsFragment();
+        return lastSearchsFragment;
     }
 
     public AppliesFragment getAppliesFragment() {
@@ -49,7 +49,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return getSearchsFragment();
+            case 0: return getLastSearchsFragment();
             case 1: return getAppliesFragment();
             case 2: return getNotifyFragment();
             case 3: return getMeFragment();

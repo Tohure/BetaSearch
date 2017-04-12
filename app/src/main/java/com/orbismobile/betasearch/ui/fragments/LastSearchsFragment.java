@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 
 import com.orbismobile.betasearch.R;
 
-public class SearchsFragment extends Fragment {
+public class LastSearchsFragment extends Fragment {
 
 
-    public SearchsFragment() {
+    public LastSearchsFragment() {
         // Required empty public constructor
     }
 

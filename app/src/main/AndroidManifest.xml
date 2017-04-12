@@ -20,7 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.TabActivity"></activity>
+        <activity android:name=".ui.activities.TabActivity" />
+        <activity
+            android:name=".ui.activities.SearchActivity"
+            android:label="@string/title_activity_last_search"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
