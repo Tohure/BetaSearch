@@ -14,6 +14,8 @@ public interface SearchView {
 
     void getJobsFail(String message);
 
+    void getJobsError(String message);
+
     void showProgress();
 
     void hideProgress();
