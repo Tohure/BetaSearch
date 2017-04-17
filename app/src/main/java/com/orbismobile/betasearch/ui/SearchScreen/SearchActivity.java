@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.ui.activities;
+package com.orbismobile.betasearch.ui.SearchScreen;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
