@@ -15,20 +15,21 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.orbismobile.betasearch.R;
 import com.orbismobile.betasearch.model.Job;
+import com.orbismobile.betasearch.model.response.JobsResponse;
 
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements SearchView, View.OnClickListener {
+public class SearchActivity extends AppCompatActivity implements SearchView, View.OnClickListener, TextView.OnEditorActionListener {
 
-    private EditText search_bar;
+    private EditText search_bar,location_bar;
     private SearchPresenter searchPresenter;
-    private AppCompatImageView dialogImgClose;
-    private int totalChars = 0;
-    private String querySearch;
+    private AppCompatImageView dialogImgClose,dialogImgBack;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +39,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView, Vie
         setSupportActionBar(toolbar);
         injectPresenter();
         initUI();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
 
@@ -56,67 +48,46 @@ public class SearchActivity extends AppCompatActivity implements SearchView, Vie
     }
 
     private void initUI() {
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        dialogImgBack = (AppCompatImageView) findViewById(R.id.dialogImgBack);
+        dialogImgBack.setOnClickListener(this);
 
         dialogImgClose = (AppCompatImageView) findViewById(R.id.dialogImgClose);
         dialogImgClose.setOnClickListener(this);
 
+        location_bar = (EditText) findViewById(R.id.location_bar);
+        location_bar.setOnEditorActionListener(this);
+
         search_bar = (EditText) findViewById(R.id.search_bar);
-        hideSoftKeyboard();
-        search_bar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                totalChars = s.length();
-                querySearch = s.toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        search_bar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (totalChars >= 6){
-                        searchPresenter.getJobsSearch(querySearch);
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+        search_bar.setOnEditorActionListener(this);
     }
 
     @Override
-    public void getJobsDone(List<Job> jobs) {
+    public void listJobsDone(List<JobsResponse.DataBean> jobs) {
+        for (int i = 0; i < jobs.size(); i++){
+            Log.d("thr",jobs.get(i).getTitle());
+        }
+    }
+
+    @Override
+    public void listJobsFail(String message) {
 
     }
 
     @Override
-    public void getJobsFail(String message) {
-
-    }
-
-    @Override
-    public void getJobsError(String message) {
+    public void listJobsError(String message) {
 
     }
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -125,14 +96,30 @@ public class SearchActivity extends AppCompatActivity implements SearchView, Vie
             case R.id.dialogImgClose:
                 search_bar.setText("");
                 break;
-
+            case R.id.dialogImgBack:
+                finish();
+                break;
         }
     }
 
     public void hideSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(
-                Context.INPUT_METHOD_SERVICE
-        );
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(search_bar.getWindowToken(), 0);
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        if (v.getId() == R.id.search_bar && actionId == EditorInfo.IME_ACTION_SEARCH){
+            location_bar.requestFocus();
+            return true;
+        }
+
+        if (v.getId() == R.id.location_bar && actionId == EditorInfo.IME_ACTION_SEARCH) {
+            searchPresenter.getJobsSearch(search_bar.getText().toString());
+            return true;
+        }
+
+        return false;
     }
 }

@@ -23,6 +23,7 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
 
     @Override
     public void listJobsSuccess(List<JobsResponse.DataBean> jobs) {
+        searchView.listJobsDone(jobs);
         searchView.hideProgress();
     }
 
