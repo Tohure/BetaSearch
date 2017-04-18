@@ -18,12 +18,10 @@ import com.orbismobile.betasearch.model.response.JobsResponse;
 
 import java.util.List;
 
-import static java.security.AccessController.getContext;
-
 public class SearchListActivity extends AppCompatActivity implements SearchView {
 
     private SearchPresenter searchPresenter;
-    private String query,location;
+    private String query = "Cargo", location = "Lima";
     private ProgressBar progressBar;
     private RecyclerView list_recycler;
     private LinearLayoutManager layoutManager;
@@ -36,10 +34,12 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
 
         Bundle b = getIntent().getExtras();
 
-        if(b != null){
+        if (b != null) {
             query = b.getString("query");
             location = b.getString("location");
         }
+
+        setupToolbar();
 
         injectPresenter();
         initUI();
@@ -54,6 +54,26 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
         });
     }
 
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(query);
+        toolbar.setSubtitle(location);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+    }
+
     private void initUI() {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
@@ -63,7 +83,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
         list_recycler.addItemDecoration(itemDecoration);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        searchPresenter.getJobsSearch(query,location);
+        searchPresenter.getJobsSearch(query, location);
     }
 
     private void injectPresenter() {
@@ -73,9 +93,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
 
     @Override
     public void listJobsDone(List<JobsResponse.DataBean> jobs) {
-
         setupAdapter(jobs);
-        list_recycler.setAdapter(jobOfferAdapter);
     }
 
     private void setupAdapter(List<JobsResponse.DataBean> jobs) {
@@ -83,16 +101,17 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
         jobOfferAdapter.setOnItemClickListener(new JobsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                Log.d("thr click",itemView.getTag().toString());
+                Log.d("thr click", itemView.getTag().toString());
             }
         });
 
         jobOfferAdapter.setOnItemLongClickListener(new JobsAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View itemView, int position) {
-                Log.d("thr long-click",itemView.getTag().toString());
+                Log.d("thr long-click", itemView.getTag().toString());
             }
         });
+        list_recycler.setAdapter(jobOfferAdapter);
     }
 
     @Override
