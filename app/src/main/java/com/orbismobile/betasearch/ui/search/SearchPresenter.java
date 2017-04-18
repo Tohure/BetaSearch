@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.ui.SearchScreen;
+package com.orbismobile.betasearch.ui.search;
 
 import com.orbismobile.betasearch.model.response.JobsResponse;
 import com.orbismobile.betasearch.utils.Presenter;
@@ -14,9 +14,9 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
     private SearchView searchView;
     private SearchInteractor searchInteractor;
 
-    public void getJobsSearch(String query) {
+    public void getJobsSearch(String query, String location) {
         searchView.showProgress();
-        searchInteractor.listJobs(query, this);
+        searchInteractor.listJobs(query,location, this);
     }
 
 

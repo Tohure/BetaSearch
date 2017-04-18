@@ -1,38 +1,31 @@
-package com.orbismobile.betasearch.ui.SearchScreen;
+package com.orbismobile.betasearch.ui.search;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatImageView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.orbismobile.betasearch.R;
-import com.orbismobile.betasearch.model.response.JobsResponse;
-
-import java.util.List;
 
 public class SearchBarFragment extends DialogFragment implements View.OnClickListener, TextView.OnEditorActionListener {
 
     private EditText search_bar, location_bar;
     private AppCompatImageView dialogImgClose, dialogImgBack;
     private View rootView;
-
+    private Dialog dialog;
     public SearchBarFragment() { }
 
     @SuppressWarnings("SameParameterValue")
@@ -43,11 +36,15 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        dialog = getDialog();
 
-        WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
-        params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        getDialog().getWindow().setAttributes(params);
+        if (dialog != null && dialog.getWindow() != null){
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.windowAnimations = R.style.DialogAnimation;
+            dialog.getWindow().setAttributes(params);
+        }
 
         return inflater.inflate(R.layout.fragment_search_bar, container, false);
     }
@@ -56,9 +53,8 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
     public void onStart() {
         super.onStart();
 
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        if (dialog != null && dialog.getWindow() != null){
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
@@ -68,8 +64,7 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
         rootView = view;
         initUI();
     }
-
-
+    
     private void initUI() {
         dialogImgBack = (AppCompatImageView) rootView.findViewById(R.id.dialogImgBack);
         dialogImgBack.setOnClickListener(this);
@@ -91,7 +86,7 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
                 search_bar.setText("");
                 break;
             case R.id.dialogImgBack:
-                //close
+                dismiss();
                 break;
         }
     }
@@ -106,6 +101,13 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
 
         if (v.getId() == R.id.location_bar && actionId == EditorInfo.IME_ACTION_SEARCH) {
             //searchPresenter.getJobsSearch(search_bar.getText().toString());
+            Intent searchIntent = new Intent(getContext(), SearchListActivity.class);
+            searchIntent.putExtra("query", search_bar.getText().toString());
+            searchIntent.putExtra("location", location_bar.getText().toString());
+
+            startActivity(searchIntent);
+            getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+            dismiss();
             return true;
         }
 

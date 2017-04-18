@@ -17,5 +17,5 @@ public interface Api {
     Call<JobsResponse> getJobs(JobsRequest jobsRequest);
 
     @GET("jobs/search")
-    Call<JobsResponse> getJobsSearch(@Query("query") String query);
+    Call<JobsResponse> getJobsSearch(@Query("query") String query,@Query("location") String location);
 }

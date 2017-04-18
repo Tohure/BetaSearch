@@ -23,6 +23,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.TabActivity" />
+        <activity
+            android:name=".ui.search.SearchListActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

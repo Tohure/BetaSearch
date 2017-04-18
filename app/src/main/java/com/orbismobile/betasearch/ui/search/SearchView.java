@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.ui.SearchScreen;
+package com.orbismobile.betasearch.ui.search;
 
 import com.orbismobile.betasearch.model.response.JobsResponse;
 

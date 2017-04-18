@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.ui.SearchScreen;
+package com.orbismobile.betasearch.ui.search;
 
 import com.orbismobile.betasearch.api.ApiManager;
 import com.orbismobile.betasearch.model.response.JobsResponse;
@@ -15,9 +15,9 @@ import retrofit2.Response;
 
 public class SearchInteractor {
 
-    public void listJobs(String query, final SearchCallback callback){
+    public void listJobs(String query, String location, final SearchCallback callback){
 
-        Call<JobsResponse> call = ApiManager.apiManager().getJobsSearch(query);
+        Call<JobsResponse> call = ApiManager.apiManager().getJobsSearch(query,location);
         call.enqueue(new Callback<JobsResponse>() {
             @Override
             public void onResponse(Call<JobsResponse> call, Response<JobsResponse> response) {
