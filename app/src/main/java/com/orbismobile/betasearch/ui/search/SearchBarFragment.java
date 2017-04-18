@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.orbismobile.betasearch.R;
 
@@ -101,14 +102,24 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
 
         if (v.getId() == R.id.location_bar && actionId == EditorInfo.IME_ACTION_SEARCH) {
             //searchPresenter.getJobsSearch(search_bar.getText().toString());
-            Intent searchIntent = new Intent(getContext(), SearchListActivity.class);
-            searchIntent.putExtra("query", search_bar.getText().toString());
-            searchIntent.putExtra("location", location_bar.getText().toString());
 
-            startActivity(searchIntent);
-            getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-            dismiss();
-            return true;
+            String query = search_bar.getText().toString();
+            String location = location_bar.getText().toString();
+
+            if (!query.equals("") || !location.equals("")){
+                Intent searchIntent = new Intent(getContext(), SearchListActivity.class);
+                searchIntent.putExtra("query", search_bar.getText().toString());
+                searchIntent.putExtra("location", location_bar.getText().toString());
+
+                startActivity(searchIntent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                dismiss();
+                return true;
+            }else{
+                Toast.makeText(getContext(), "Almenos una opción (Puesto | Lugar)", Toast.LENGTH_SHORT).show();
+            }
+
+
         }
 
         return false;
