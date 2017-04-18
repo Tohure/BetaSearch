@@ -1,8 +1,6 @@
 package com.orbismobile.betasearch.ui.SearchScreen;
 
 import com.orbismobile.betasearch.api.ApiManager;
-import com.orbismobile.betasearch.model.Job;
-import com.orbismobile.betasearch.model.request.JobsRequest;
 import com.orbismobile.betasearch.model.response.JobsResponse;
 
 import java.util.List;

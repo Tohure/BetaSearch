@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.orbismobile.betasearch.ui.SearchScreen.SearchActivity"
-    tools:showIn="@layout/activity_last_search">
+    tools:context="com.orbismobile.betasearch.ui.SearchScreen.SearchBarFragment"
+    tools:showIn="@layout/fragment_search_bar">
 
 </android.support.constraint.ConstraintLayout>

@@ -5,9 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.orbismobile.betasearch.ui.fragments.AppliesFragment;
+import com.orbismobile.betasearch.ui.fragments.LastSearchsFragment;
 import com.orbismobile.betasearch.ui.fragments.MeFragment;
 import com.orbismobile.betasearch.ui.fragments.NotifyFragment;
-import com.orbismobile.betasearch.ui.fragments.LastSearchsFragment;
 
 /**
  * Created by tohure on 12/04/17.
