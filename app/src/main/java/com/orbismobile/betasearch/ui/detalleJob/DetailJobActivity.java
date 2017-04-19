@@ -1,16 +1,23 @@
 package com.orbismobile.betasearch.ui.detalleJob;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.orbismobile.betasearch.R;
+import com.orbismobile.betasearch.data.RecomendsAdapter;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
+
+import java.util.List;
 
 
 public class DetailJobActivity extends AppCompatActivity implements DetailView {
@@ -18,8 +25,10 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
     private String idJob = "";
     private DetailPresenter detailPresenter;
     private ProgressBar progressBar;
-    private TextView descriptionJob,companyJob,dateJob,placeJob,salaryJob;
+    private TextView descriptionJob, companyJob, dateJob, placeJob, salaryJob;
     private Toolbar toolbar;
+    private RecyclerView rycRecomendados;
+    private RecomendsAdapter recomendsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +36,9 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
         setContentView(R.layout.activity_detail_job);
 
         Bundle b = getIntent().getExtras();
-
-        if (b != null) { idJob = b.getString("idJob"); }
+        if (b != null) {
+            idJob = b.getString("idJob");
+        }
 
         initUI();
         injectPresenter();
@@ -38,13 +48,21 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Postulación Correcta", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
     }
 
     private void initUI() {
+        rycRecomendados = (RecyclerView) findViewById(R.id.rycRecomendados);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL);
+        rycRecomendados.setLayoutManager(layoutManager);
+        rycRecomendados.setHasFixedSize(true);
+        rycRecomendados.addItemDecoration(itemDecoration);
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         descriptionJob = (TextView) findViewById(R.id.descriptionJob);
         companyJob = (TextView) findViewById(R.id.companyJob);
@@ -64,7 +82,7 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -80,15 +98,36 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
     @Override
     public void detailJobsDone(JobSearchResponse.DataBean job) {
         toolbar.setTitle(job.getTitle());
-
         descriptionJob.setText(job.getDescription());
         companyJob.setText(job.getCompany());
         dateJob.setText(job.getDate());
         placeJob.setText(job.getPlace());
-        salaryJob.setText("S/. "+job.getSalary());
+        salaryJob.setText("S/. " + job.getSalary());
 
+        detailPresenter.getJobsRecomend(job.getKeywords(), String.valueOf(job.getId()));
     }
 
+    @Override
+    public void recoJobsDone(List<JobSearchResponse.DataBean> jobs) {
+        setupAdapterRecomends(jobs);
+    }
+
+    private void setupAdapterRecomends(List<JobSearchResponse.DataBean> jobs) {
+        recomendsAdapter = new RecomendsAdapter(jobs);
+        recomendsAdapter.setOnItemClickListener(new RecomendsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                Intent searchIntent = new Intent(getApplicationContext(), DetailJobActivity.class);
+                searchIntent.putExtra("idJob", itemView.getTag().toString());
+
+                startActivity(searchIntent);
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            }
+        });
+        rycRecomendados.setAdapter(recomendsAdapter);
+    }
+
+    //<editor-fold desc="ERROR HANDLERS">
     @Override
     public void detailJobsFail(String message) {
 
@@ -98,6 +137,17 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
     public void detailJobsError(String message) {
 
     }
+
+    @Override
+    public void recoJobsFail(String message) {
+
+    }
+
+    @Override
+    public void recoJobsError(String message) {
+
+    }
+    //</editor-fold>
 
     @Override
     public void showProgress() {

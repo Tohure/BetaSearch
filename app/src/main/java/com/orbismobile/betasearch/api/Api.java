@@ -20,7 +20,9 @@ public interface Api {
     @GET("jobs/search")
     Call<JobSearchResponse> getJobsSearch(@Query("query") String query, @Query("location") String location);
 
-
     @GET("jobs/detail")
     Call<JobDetailResponse> getJobsDetail(@Query("idjob") String idjob);
+
+    @GET("jobs/recomends")
+    Call<JobSearchResponse> getJobsRecom(@Query("tags") String tags,@Query("idjob") String idjob);
 }

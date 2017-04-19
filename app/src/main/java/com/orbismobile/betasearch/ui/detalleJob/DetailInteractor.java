@@ -2,6 +2,7 @@ package com.orbismobile.betasearch.ui.detalleJob;
 
 import com.orbismobile.betasearch.api.ApiManager;
 import com.orbismobile.betasearch.model.response.JobDetailResponse;
+import com.orbismobile.betasearch.model.response.JobSearchResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +32,25 @@ public class DetailInteractor {
                 callback.detailJobsServerError(t.getMessage());
             }
         });
+    }
 
+    public void recomJob(String tags, String id, final DetailCallback callback){
+
+        Call<JobSearchResponse> call = ApiManager.apiManager().getJobsRecom(tags,id);
+        call.enqueue(new Callback<JobSearchResponse>() {
+            @Override
+            public void onResponse(Call<JobSearchResponse> call, Response<JobSearchResponse> response) {
+                if(response.isSuccessful()){
+                    JobSearchResponse jobDetailResponse = response.body();
+                    callback.recoJobsSuccess(jobDetailResponse.getData());
+                }else{
+                    callback.recoJobsError(response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<JobSearchResponse> call, Throwable t) {
+                callback.recoJobsServerError(t.getMessage());
+            }
+        });
     }
 }
