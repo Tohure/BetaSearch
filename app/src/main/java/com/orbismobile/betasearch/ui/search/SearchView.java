@@ -1,6 +1,6 @@
 package com.orbismobile.betasearch.ui.search;
 
-import com.orbismobile.betasearch.model.response.JobsResponse;
+import com.orbismobile.betasearch.model.response.JobSearchResponse;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface SearchView {
 
-    void listJobsDone(List<JobsResponse.DataBean> jobs);
+    void listJobsDone(List<JobSearchResponse.DataBean> jobs);
 
     void listJobsFail(String message);
 

@@ -1,7 +1,8 @@
 package com.orbismobile.betasearch.api;
 
 import com.orbismobile.betasearch.model.request.JobsRequest;
-import com.orbismobile.betasearch.model.response.JobsResponse;
+import com.orbismobile.betasearch.model.response.JobDetailResponse;
+import com.orbismobile.betasearch.model.response.JobSearchResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,8 +15,12 @@ import retrofit2.http.Query;
 public interface Api {
 
     @GET("jobs")
-    Call<JobsResponse> getJobs(JobsRequest jobsRequest);
+    Call<JobSearchResponse> getJobs(JobsRequest jobsRequest);
 
     @GET("jobs/search")
-    Call<JobsResponse> getJobsSearch(@Query("query") String query,@Query("location") String location);
+    Call<JobSearchResponse> getJobsSearch(@Query("query") String query, @Query("location") String location);
+
+
+    @GET("jobs/detail")
+    Call<JobDetailResponse> getJobsDetail(@Query("idjob") String idjob);
 }

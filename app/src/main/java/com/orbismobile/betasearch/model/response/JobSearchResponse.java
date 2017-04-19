@@ -6,7 +6,7 @@ import java.util.List;
  * Created by crhto on 16/04/2017.
  */
 
-public class JobsResponse {
+public class JobSearchResponse {
 
     /**
      * error : 0

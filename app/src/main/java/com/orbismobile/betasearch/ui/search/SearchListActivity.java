@@ -1,5 +1,6 @@
 package com.orbismobile.betasearch.ui.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,7 +15,8 @@ import android.widget.ProgressBar;
 
 import com.orbismobile.betasearch.R;
 import com.orbismobile.betasearch.data.JobsAdapter;
-import com.orbismobile.betasearch.model.response.JobsResponse;
+import com.orbismobile.betasearch.model.response.JobSearchResponse;
+import com.orbismobile.betasearch.ui.detalleJob.DetailJobActivity;
 
 import java.util.List;
 
@@ -40,7 +42,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
         }
 
         setupToolbar();
-
         injectPresenter();
         initUI();
 
@@ -92,16 +93,20 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
     }
 
     @Override
-    public void listJobsDone(List<JobsResponse.DataBean> jobs) {
+    public void listJobsDone(List<JobSearchResponse.DataBean> jobs) {
         setupAdapter(jobs);
     }
 
-    private void setupAdapter(List<JobsResponse.DataBean> jobs) {
+    private void setupAdapter(List<JobSearchResponse.DataBean> jobs) {
         jobOfferAdapter = new JobsAdapter(this, jobs);
         jobOfferAdapter.setOnItemClickListener(new JobsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                Log.d("thr click", itemView.getTag().toString());
+                Intent searchIntent = new Intent(getApplicationContext(), DetailJobActivity.class);
+                searchIntent.putExtra("idJob", itemView.getTag().toString());
+
+                startActivity(searchIntent);
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 

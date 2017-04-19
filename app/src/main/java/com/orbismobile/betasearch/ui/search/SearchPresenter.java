@@ -1,6 +1,6 @@
 package com.orbismobile.betasearch.ui.search;
 
-import com.orbismobile.betasearch.model.response.JobsResponse;
+import com.orbismobile.betasearch.model.response.JobSearchResponse;
 import com.orbismobile.betasearch.utils.Presenter;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
 
 
     @Override
-    public void listJobsSuccess(List<JobsResponse.DataBean> jobs) {
+    public void listJobsSuccess(List<JobSearchResponse.DataBean> jobs) {
         searchView.listJobsDone(jobs);
         searchView.hideProgress();
     }

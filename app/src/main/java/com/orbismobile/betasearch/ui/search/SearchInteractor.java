@@ -1,7 +1,7 @@
 package com.orbismobile.betasearch.ui.search;
 
 import com.orbismobile.betasearch.api.ApiManager;
-import com.orbismobile.betasearch.model.response.JobsResponse;
+import com.orbismobile.betasearch.model.response.JobSearchResponse;
 
 import java.util.List;
 
@@ -17,20 +17,20 @@ public class SearchInteractor {
 
     public void listJobs(String query, String location, final SearchCallback callback){
 
-        Call<JobsResponse> call = ApiManager.apiManager().getJobsSearch(query,location);
-        call.enqueue(new Callback<JobsResponse>() {
+        Call<JobSearchResponse> call = ApiManager.apiManager().getJobsSearch(query,location);
+        call.enqueue(new Callback<JobSearchResponse>() {
             @Override
-            public void onResponse(Call<JobsResponse> call, Response<JobsResponse> response) {
+            public void onResponse(Call<JobSearchResponse> call, Response<JobSearchResponse> response) {
                 if(response.isSuccessful()){
-                    JobsResponse jobsResponse = response.body();
-                    List<JobsResponse.DataBean> jobList = jobsResponse.getData();
+                    JobSearchResponse jobSearchResponse = response.body();
+                    List<JobSearchResponse.DataBean> jobList = jobSearchResponse.getData();
                     callback.listJobsSuccess(jobList);
                 }else{
                     callback.listJobsError(response.message());
                 }
             }
             @Override
-            public void onFailure(Call<JobsResponse> call, Throwable t) {
+            public void onFailure(Call<JobSearchResponse> call, Throwable t) {
                 callback.listJobsServerError(t.getMessage());
             }
         });

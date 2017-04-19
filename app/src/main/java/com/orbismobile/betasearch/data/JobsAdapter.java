@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.orbismobile.betasearch.R;
-import com.orbismobile.betasearch.model.response.JobsResponse;
+import com.orbismobile.betasearch.model.response.JobSearchResponse;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ItemSearchViewHolder> {
 
-    private List<JobsResponse.DataBean> jobList;
+    private List<JobSearchResponse.DataBean> jobList;
     private Context mContext;
     private static OnItemClickListener listener;
     private static OnItemLongClickListener longListener;
@@ -33,7 +33,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ItemSearchView
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) { JobsAdapter.longListener = listener; }
 
-    public JobsAdapter(Context context, List<JobsResponse.DataBean> items) {
+    public JobsAdapter(Context context, List<JobSearchResponse.DataBean> items) {
         this.jobList = items;
         this.mContext = context;
     }
