@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -95,6 +95,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
     @Override
     public void listJobsDone(List<JobSearchResponse.DataBean> jobs) {
         setupAdapter(jobs);
+        //TODO: Save query with ORMLite
     }
 
     private void setupAdapter(List<JobSearchResponse.DataBean> jobs) {
@@ -113,10 +114,16 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
         jobOfferAdapter.setOnItemLongClickListener(new JobsAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View itemView, int position) {
-                Log.d("thr long-click", itemView.getTag().toString());
+                callDialog(itemView.getTag().toString());
             }
         });
         list_recycler.setAdapter(jobOfferAdapter);
+    }
+
+    private void callDialog(String s) {
+        FragmentManager fm = this.getSupportFragmentManager();
+        SearchOptionsDialogFragment searchOptionsDialogFragment = SearchOptionsDialogFragment.newInstance(s);
+        searchOptionsDialogFragment.show(fm, "layout_search_bar");
     }
 
     @Override

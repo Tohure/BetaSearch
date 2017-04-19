@@ -9,6 +9,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.orbismobile.betasearch.R;
 import com.orbismobile.betasearch.data.RecomendsAdapter;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
+import com.orbismobile.betasearch.ui.activities.TabActivity;
 
 import java.util.List;
 
@@ -52,6 +55,36 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miShare: {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Ey revisa este anuncio de empleo que tengo aqui.");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                break;
+            }
+            case R.id.miHome: {
+                Intent searchIntent = new Intent(this, TabActivity.class);
+                searchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(searchIntent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+                break;
+            }
+        }
+        return false;
     }
 
     private void initUI() {
@@ -121,7 +154,7 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
                 searchIntent.putExtra("idJob", itemView.getTag().toString());
 
                 startActivity(searchIntent);
-                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
         rycRecomendados.setAdapter(recomendsAdapter);
