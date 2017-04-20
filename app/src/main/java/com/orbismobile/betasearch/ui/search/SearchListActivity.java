@@ -26,8 +26,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
     private String query = "Cargo", location = "Lima";
     private ProgressBar progressBar;
     private RecyclerView list_recycler;
-    private LinearLayoutManager layoutManager;
-    private JobsAdapter jobOfferAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +70,10 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
                 finish();
             }
         });
-
     }
 
     private void initUI() {
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         list_recycler = (RecyclerView) findViewById(R.id.list_recycler);
         list_recycler.setLayoutManager(layoutManager);
@@ -89,17 +86,17 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
 
     private void injectPresenter() {
         searchPresenter = new SearchPresenter();
-        searchPresenter.attachedView(this);
+        searchPresenter.attachedView(this,getApplicationContext());
     }
 
     @Override
     public void listJobsDone(List<JobSearchResponse.DataBean> jobs) {
         setupAdapter(jobs);
-        //TODO: Save query with ORMLite
+        searchPresenter.saveQueryinDB(query,location);
     }
 
     private void setupAdapter(List<JobSearchResponse.DataBean> jobs) {
-        jobOfferAdapter = new JobsAdapter(this, jobs);
+        JobsAdapter jobOfferAdapter = new JobsAdapter(this, jobs);
         jobOfferAdapter.setOnItemClickListener(new JobsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -144,5 +141,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        searchPresenter.detachView();
     }
 }

@@ -1,0 +1,30 @@
+#
+# generated on 2017/04/20 06:18:23
+#
+# --table-start--
+dataClass=com.orbismobile.betasearch.model.db.LastSearch
+tableName=LastSearch
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=query
+columnName=query
+# --field-end--
+# --field-start--
+fieldName=place
+columnName=place
+# --field-end--
+# --field-start--
+fieldName=alerta
+columnName=alert
+# --field-end--
+# --field-start--
+fieldName=filtros
+columnName=filtro
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

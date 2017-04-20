@@ -1,5 +1,7 @@
 package com.orbismobile.betasearch.ui.detalleJob;
 
+import android.content.Context;
+
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
 import com.orbismobile.betasearch.utils.Presenter;
 
@@ -13,6 +15,7 @@ public class DetailPresenter implements Presenter<DetailView>, DetailCallback {
 
     private DetailView detailView;
     private DetailInteractor detailInteractor;
+    private Context mContext;
 
     public void getJobDetail(String idjob) {
         detailView.showProgress();
@@ -25,8 +28,9 @@ public class DetailPresenter implements Presenter<DetailView>, DetailCallback {
     }
 
     @Override
-    public void attachedView(DetailView view) {
+    public void attachedView(DetailView view, Context context) {
         this.detailView = view;
+        this.mContext = context;
         detailInteractor = new DetailInteractor();
     }
 

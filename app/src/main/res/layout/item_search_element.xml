@@ -12,6 +12,7 @@
     <ImageView
         android:layout_width="53dp"
         android:layout_height="53dp"
+        android:contentDescription="@null"
         android:src="@drawable/robodroid" />
 
     <LinearLayout
@@ -20,7 +21,6 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingEnd="0dp"
-        android:paddingRight="0dp"
         android:paddingStart="5dp"
         tools:ignore="NestedWeights">
 
@@ -49,6 +49,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:contentDescription="@null"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_company" />
 

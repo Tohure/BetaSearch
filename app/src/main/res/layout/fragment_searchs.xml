@@ -2,14 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.orbismobile.betasearch.ui.fragments.LastSearchsFragment">
+    tools:context="com.orbismobile.betasearch.ui.lastSearchs.LastSearchsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SeaRCH"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Últimas búsquedas"
+        android:textSize="17sp"
+        android:textStyle="bold|italic" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lastSearchRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="22dp" />
 </RelativeLayout>

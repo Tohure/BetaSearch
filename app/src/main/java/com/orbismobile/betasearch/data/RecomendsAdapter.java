@@ -72,6 +72,10 @@ public class RecomendsAdapter extends RecyclerView.Adapter<RecomendsAdapter.Item
 
     @Override
     public int getItemCount() {
-        return jobList.size();
+        if (jobList.isEmpty()){
+            return 0;
+        }else {
+            return jobList.size();
+        }
     }
 }

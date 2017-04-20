@@ -106,7 +106,7 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
 
     private void injectPresenter() {
         detailPresenter = new DetailPresenter();
-        detailPresenter.attachedView(this);
+        detailPresenter.attachedView(this,getApplicationContext());
         detailPresenter.getJobDetail(idJob);
     }
 
@@ -190,5 +190,11 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        detailPresenter.detachView();
     }
 }
