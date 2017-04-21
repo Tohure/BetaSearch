@@ -1,5 +1,6 @@
 package com.orbismobile.betasearch.ui.lastSearchs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import com.orbismobile.betasearch.R;
 import com.orbismobile.betasearch.data.LastSearchsAdapter;
 import com.orbismobile.betasearch.model.db.LastSearch;
+import com.orbismobile.betasearch.ui.search.SearchListActivity;
 
 import java.util.List;
 
@@ -22,15 +24,9 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
     private LastSearchPresenter lastSearchPresenter;
     private ProgressBar progressBar;
     private RecyclerView lastSearchRecycler;
-    private LinearLayoutManager layoutManager;
     private View rootView;
 
-
-
-    public LastSearchsFragment() {
-        // Required empty public constructor
-    }
-
+    public LastSearchsFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +64,17 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
 
     private void setupAdapter(List<LastSearch> listLastSearchs) {
         LastSearchsAdapter lastSearchsAdapter = new LastSearchsAdapter(listLastSearchs,getContext());
+        lastSearchsAdapter.setOnItemClickListener(new LastSearchsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                Intent searchIntent = new Intent(getContext(), SearchListActivity.class);
+                searchIntent.putExtra("query", itemView.getTag(R.id.querySearch).toString());
+                searchIntent.putExtra("location", itemView.getTag(R.id.locationSearch).toString());
+
+                startActivity(searchIntent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+            }
+        });
         lastSearchRecycler.setAdapter(lastSearchsAdapter);
     }
 

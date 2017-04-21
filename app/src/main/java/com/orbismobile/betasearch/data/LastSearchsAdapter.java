@@ -1,10 +1,12 @@
 package com.orbismobile.betasearch.data;
 
 import android.content.Context;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.
 
         private LinearLayout rowContainer;
         private TextView titleSearch, locationSearch;
+        private ImageView alertRing,filterSearch;
 
         public LastItemViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +46,17 @@ public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.
             this.rowContainer = (LinearLayout) itemView.findViewById(R.id.rowContainer);
             this.titleSearch = (TextView) itemView.findViewById(R.id.titleSearch);
             this.locationSearch = (TextView) itemView.findViewById(R.id.locationSearch);
+            this.alertRing = (ImageView) itemView.findViewById(R.id.alertRing);
+            this.filterSearch = (ImageView) itemView.findViewById(R.id.filterSearch);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        listener.onItemClick(v,getLayoutPosition());
+                    }
+                }
+            });
         }
     }
 
@@ -58,6 +72,20 @@ public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.
         holder.rowContainer.setTag(R.id.locationSearch,lastSearches.get(position).getPlace());
         holder.titleSearch.setText(lastSearches.get(position).getQuery());
         holder.locationSearch.setText(" | "+lastSearches.get(position).getPlace());
+
+        if (lastSearches.get(position).getAlerta()){
+            //holder.alertRing.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.ic_alert_ring_green, null));
+            holder.alertRing.setImageResource(R.drawable.ic_alert_ring_green);
+        }else {
+            holder.alertRing.setImageResource(R.drawable.ic_alert_ring_griss);
+        }
+
+        if (lastSearches.get(position).getAlerta()){
+            //holder.alertRing.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.ic_alert_ring_green, null));
+            holder.filterSearch.setImageResource(R.drawable.ic_filters_green);
+        }else {
+            holder.filterSearch.setImageResource(R.drawable.ic_filters_griss);
+        }
     }
 
     @Override
