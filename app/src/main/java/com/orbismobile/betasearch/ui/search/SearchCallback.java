@@ -14,4 +14,6 @@ public interface SearchCallback {
     void listJobsError(String message);
     void listJobsServerError(String message);
 
+    void saveSearchDone(int id);
+    void saveSearchFail();
 }

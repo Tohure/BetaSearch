@@ -42,7 +42,6 @@ public class LastSearchPresenter implements Presenter<LastSearchView>, LastSearc
     @Override
     public void listLastSearchsError(String message) {
         lastSearchView.hideProgress();
-        Log.d("thr",message);
     }
 
     @Override

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item type="id" value="integer" name="idLastSearch"/>
     <item type="id" value="integer" name="querySearch"/>
     <item type="id" value="integer" name="locationSearch"/>
 </resources>

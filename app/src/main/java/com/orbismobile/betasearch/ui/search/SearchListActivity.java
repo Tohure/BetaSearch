@@ -2,17 +2,19 @@ package com.orbismobile.betasearch.ui.search;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.orbismobile.betasearch.R;
 import com.orbismobile.betasearch.data.JobsAdapter;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
@@ -20,12 +22,15 @@ import com.orbismobile.betasearch.ui.detalleJob.DetailJobActivity;
 
 import java.util.List;
 
-public class SearchListActivity extends AppCompatActivity implements SearchView {
+public class SearchListActivity extends AppCompatActivity implements SearchView, View.OnClickListener {
 
     private SearchPresenter searchPresenter;
     private String query = "Cargo", location = "Lima";
+    private int idLastSearch = 0;
     private ProgressBar progressBar;
     private RecyclerView list_recycler;
+    private FloatingActionMenu fabMenu;
+    private FloatingActionButton fabAlarm, fabFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +42,12 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
         if (b != null) {
             query = b.getString("query");
             location = b.getString("location");
+            idLastSearch = b.getInt("idLastSearch");
         }
 
         setupToolbar();
         injectPresenter();
         initUI();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     private void setupToolbar() {
@@ -66,13 +63,13 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                finish();
-            }
+            public void onClick(View view) { finish(); }
         });
     }
 
     private void initUI() {
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         list_recycler = (RecyclerView) findViewById(R.id.list_recycler);
@@ -80,8 +77,14 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
         list_recycler.setHasFixedSize(true);
         list_recycler.addItemDecoration(itemDecoration);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        fabMenu = (FloatingActionMenu) findViewById(R.id.menu_actions);
+        fabAlarm = (FloatingActionButton) findViewById(R.id.float_menu_alarm);
+        fabFilter = (FloatingActionButton) findViewById(R.id.float_menu_filter);
         searchPresenter.getJobsSearch(query, location);
+
+        if (idLastSearch > 0){
+            updateFabButtons();
+        }
     }
 
     private void injectPresenter() {
@@ -93,6 +96,17 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
     public void listJobsDone(List<JobSearchResponse.DataBean> jobs) {
         setupAdapter(jobs);
         searchPresenter.saveQueryinDB(query,location);
+    }
+
+    private void updateFabButtons() {
+        if (searchPresenter.getStatusAlarm(idLastSearch)){
+            fabAlarm.setImageResource(R.drawable.ic_bell_active);
+        }else{
+            fabAlarm.setImageResource(R.drawable.ic_bell_deactive);
+        }
+        fabAlarm.setOnClickListener(this);
+        fabFilter.setOnClickListener(this);
+        fabMenu.setVisibility(View.VISIBLE);
     }
 
     private void setupAdapter(List<JobSearchResponse.DataBean> jobs) {
@@ -134,6 +148,12 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
     }
 
     @Override
+    public void saveQueryDone(int id) {
+        idLastSearch = id;
+        updateFabButtons();
+    }
+
+    @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -147,5 +167,26 @@ public class SearchListActivity extends AppCompatActivity implements SearchView 
     protected void onDestroy() {
         super.onDestroy();
         searchPresenter.detachView();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.float_menu_alarm:
+                if (searchPresenter.getStatusAlarm(idLastSearch)){
+                    searchPresenter.setAlarm(idLastSearch,false);
+                    Toast.makeText(this, "Notificaciones Desactivadas", Toast.LENGTH_SHORT).show();
+                    fabAlarm.setImageResource(R.drawable.ic_bell_deactive);
+                }else{
+                    searchPresenter.setAlarm(idLastSearch,true);
+                    Toast.makeText(this, "Notificaciones Activadas para esta búsqueda", Toast.LENGTH_SHORT).show();
+                    fabAlarm.setImageResource(R.drawable.ic_bell_active);
+                }
+                fabMenu.close(true);
+                Log.d("thr",""+searchPresenter.getStatusAlarm(idLastSearch));
+                break;
+            case R.id.float_menu_filter:
+                break;
+        }
     }
 }

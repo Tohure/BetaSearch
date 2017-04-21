@@ -110,7 +110,7 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
                 Intent searchIntent = new Intent(getContext(), SearchListActivity.class);
                 searchIntent.putExtra("query", search_bar.getText().toString());
                 searchIntent.putExtra("location", location_bar.getText().toString());
-
+                searchIntent.putExtra("idLastSearch", 0);
                 startActivity(searchIntent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 dismiss();

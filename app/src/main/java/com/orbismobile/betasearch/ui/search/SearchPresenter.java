@@ -1,6 +1,7 @@
 package com.orbismobile.betasearch.ui.search;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -23,41 +24,26 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
     private DatabaseHelper dbHelper;
     private Context mContext;
 
+    public int getId(String query, String location) {
+        return searchInteractor.getIdQuery(query,location);
+    }
+
     public void getJobsSearch(String query, String location) {
         searchView.showProgress();
         searchInteractor.listJobs(query,location, this);
     }
 
-    public void saveQueryinDB(String query, String location) {
-
-        String f_query, f_location;
-
-        f_query = query.trim().toLowerCase();
-        f_location = location.trim().toLowerCase();
-
-        RuntimeExceptionDao<LastSearch,Integer> daoLastSearch = getHelper().getLastSearchRuntimeDAO();
-
-        int total_searhs = 0;
-
-        try {
-            List<LastSearch> lastSearchList = daoLastSearch.queryBuilder()
-                    .where()
-                    .eq(LastSearch.C_QUERY, f_query)
-                    .and()
-                    .eq(LastSearch.C_PLACE, f_location)
-                    .query();
-            total_searhs = lastSearchList.size();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (total_searhs == 0){
-            LastSearch newSearchQuery = new LastSearch(f_query,f_location,false,false);
-            daoLastSearch.create(newSearchQuery);
-        }
-
+    public boolean getStatusAlarm(int idLastSearch) {
+        return searchInteractor.getStatusAlarm(idLastSearch);
     }
 
+    public void setAlarm(int idLastSearch, boolean b) {
+        searchInteractor.setAlarm(idLastSearch,b);
+    }
+
+    public void saveQueryinDB(String query, String location) {
+        searchInteractor.saveQueryInDB(query,location,this);
+    }
 
     @Override
     public void listJobsSuccess(List<JobSearchResponse.DataBean> jobs) {
@@ -76,10 +62,20 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
     }
 
     @Override
+    public void saveSearchDone(int id) {
+        searchView.saveQueryDone(id);
+    }
+
+    @Override
+    public void saveSearchFail() {
+
+    }
+
+    @Override
     public void attachedView(SearchView view, Context context) {
         this.searchView = view;
         this.mContext = context;
-        searchInteractor = new SearchInteractor();
+        searchInteractor = new SearchInteractor(getHelper());
     }
 
     @Override
@@ -99,5 +95,4 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
             dbHelper = null;
         }
     }
-
 }

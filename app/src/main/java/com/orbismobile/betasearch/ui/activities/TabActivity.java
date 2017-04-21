@@ -39,12 +39,14 @@ public class TabActivity extends AppCompatActivity implements View.OnClickListen
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(0);
 
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         txtSearch.setOnClickListener(this);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
 
         tabLayout.post(new Runnable() {
             @Override

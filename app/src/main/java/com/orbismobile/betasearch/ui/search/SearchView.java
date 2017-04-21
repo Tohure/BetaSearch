@@ -16,6 +16,8 @@ public interface SearchView {
 
     void listJobsError(String message);
 
+    void saveQueryDone(int id);
+
     void showProgress();
 
     void hideProgress();

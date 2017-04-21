@@ -17,6 +17,7 @@ import com.orbismobile.betasearch.data.LastSearchsAdapter;
 import com.orbismobile.betasearch.model.db.LastSearch;
 import com.orbismobile.betasearch.ui.search.SearchListActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LastSearchsFragment extends Fragment implements LastSearchView {
@@ -25,6 +26,8 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
     private ProgressBar progressBar;
     private RecyclerView lastSearchRecycler;
     private View rootView;
+    private LastSearchsAdapter lastSearchsAdapter;
+    private List<LastSearch> lastSearchList = new ArrayList<>();
 
     public LastSearchsFragment() { }
 
@@ -41,6 +44,12 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
         initUI();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        lastSearchPresenter.getLastSearchs();
+    }
+
     private void injectPresenter() {
         lastSearchPresenter = new LastSearchPresenter();
         lastSearchPresenter.attachedView(this,getContext());
@@ -54,28 +63,34 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
         lastSearchRecycler.setHasFixedSize(true);
         lastSearchRecycler.addItemDecoration(itemDecoration);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        lastSearchPresenter.getLastSearchs();
-    }
 
-    @Override
-    public void listLastSearchsDone(List<LastSearch> listLastSearchs) {
-        setupAdapter(listLastSearchs);
-    }
-
-    private void setupAdapter(List<LastSearch> listLastSearchs) {
-        LastSearchsAdapter lastSearchsAdapter = new LastSearchsAdapter(listLastSearchs,getContext());
+        lastSearchsAdapter = new LastSearchsAdapter(getContext());
         lastSearchsAdapter.setOnItemClickListener(new LastSearchsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
                 Intent searchIntent = new Intent(getContext(), SearchListActivity.class);
                 searchIntent.putExtra("query", itemView.getTag(R.id.querySearch).toString());
                 searchIntent.putExtra("location", itemView.getTag(R.id.locationSearch).toString());
+                searchIntent.putExtra("idLastSearch", (Integer) itemView.getTag(R.id.idLastSearch));
 
                 startActivity(searchIntent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
             }
         });
+
         lastSearchRecycler.setAdapter(lastSearchsAdapter);
+        lastSearchPresenter.getLastSearchs();
+    }
+
+    @Override
+    public void listLastSearchsDone(List<LastSearch> listLastSearchs) {
+        lastSearchList = listLastSearchs;
+        setupAdapter();
+    }
+
+    private void setupAdapter() {
+        lastSearchsAdapter.addItemList(lastSearchList);
+        lastSearchsAdapter.notifyDataSetChanged();
     }
 
     @Override

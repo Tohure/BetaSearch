@@ -43,6 +43,14 @@ public class LastSearch {
         return query;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setQuery(String query) {
         this.query = query;
     }
