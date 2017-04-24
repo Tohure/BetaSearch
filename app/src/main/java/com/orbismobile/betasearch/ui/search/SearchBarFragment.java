@@ -24,7 +24,7 @@ import com.orbismobile.betasearch.R;
 public class SearchBarFragment extends DialogFragment implements View.OnClickListener, TextView.OnEditorActionListener {
 
     private EditText search_bar, location_bar;
-    private AppCompatImageView dialogImgClose, dialogImgBack;
+    private AppCompatImageView dialogImgClose, dialogImgBack,getLocationPin;
     private View rootView;
     private Dialog dialog;
     public SearchBarFragment() { }
@@ -67,6 +67,10 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
     }
     
     private void initUI() {
+
+        getLocationPin = (AppCompatImageView) rootView.findViewById(R.id.getLocationPin);
+        getLocationPin.setOnClickListener(this);
+
         dialogImgBack = (AppCompatImageView) rootView.findViewById(R.id.dialogImgBack);
         dialogImgBack.setOnClickListener(this);
 
@@ -88,6 +92,9 @@ public class SearchBarFragment extends DialogFragment implements View.OnClickLis
                 break;
             case R.id.dialogImgBack:
                 dismiss();
+                break;
+            case R.id.getLocationPin:
+                location_bar.setText("Lima");
                 break;
         }
     }

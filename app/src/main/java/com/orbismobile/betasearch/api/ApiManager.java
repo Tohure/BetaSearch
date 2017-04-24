@@ -29,12 +29,11 @@ public class ApiManager {
                     .build();
 
             Retrofit client = new Retrofit.Builder()
-                    /*.baseUrl("http://172.18.60.113:8000/api/")*/
-                    .baseUrl("http://192.168.1.7:8000/api/")
+                    .baseUrl("http://172.18.60.113:8000/api/")
+                    /*.baseUrl("http://192.168.1.7:8000/api/")*/
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-
 
             api = client.create(Api.class);
         }

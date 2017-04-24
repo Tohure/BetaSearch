@@ -71,6 +71,7 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
                 searchIntent.putExtra("query", itemView.getTag(R.id.querySearch).toString());
                 searchIntent.putExtra("location", itemView.getTag(R.id.locationSearch).toString());
                 searchIntent.putExtra("idLastSearch", (Integer) itemView.getTag(R.id.idLastSearch));
+                searchIntent.putExtra("filter", (Boolean) itemView.getTag(R.id.statusFilter));
 
                 startActivity(searchIntent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);

@@ -16,15 +16,23 @@ import com.orbismobile.betasearch.model.db.Filter;
 public class FilterActivity extends AppCompatActivity {
 
     private EditText filterSalary;
+    private Toolbar toolbar;
+    private String salary = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        Bundle b = getIntent().getExtras();
+
+        if (b != null) {
+            salary = b.getString("filter");
+        }
 
         initUI();
+        //injectPresenter();
+        setupToolbar();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -35,14 +43,36 @@ public class FilterActivity extends AppCompatActivity {
                 returnIntent.putExtra("filter",filter);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
-                Snackbar.make(view, "Filtro Aplicado", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            }
+        });
+    }
+
+    private void setupToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Aplicar Filtros");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
 
     private void initUI() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         filterSalary = (EditText) findViewById(R.id.filterSalary);
+
+        if (!salary.equals("")){
+            filterSalary.setText(salary);
+        }
     }
 
 }

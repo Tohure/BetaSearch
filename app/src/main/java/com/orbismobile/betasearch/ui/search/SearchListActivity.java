@@ -3,6 +3,8 @@ package com.orbismobile.betasearch.ui.search;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -28,10 +30,12 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
 
     private SearchPresenter searchPresenter;
     private String query = "Cargo", location = "Lima";
+    private Boolean filter = false;
     private int idLastSearch = 0;
     private ProgressBar progressBar;
     private RecyclerView list_recycler;
     private FloatingActionMenu fabMenu;
+    private CoordinatorLayout container;
     private FloatingActionButton fabAlarm, fabFilter;
     static final int FILTER_REQUEST = 777;
 
@@ -46,6 +50,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
             query = b.getString("query");
             location = b.getString("location");
             idLastSearch = b.getInt("idLastSearch");
+            filter = b.getBoolean("filter");
         }
 
         setupToolbar();
@@ -73,6 +78,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
     }
 
     private void initUI() {
+        container = (CoordinatorLayout) findViewById(R.id.container);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -191,8 +197,10 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
                 break;
             case R.id.float_menu_filter:
                 Intent searchIntent = new Intent(getApplicationContext(), FilterActivity.class);
+                if (filter){ searchIntent.putExtra("filter","2500"); }
                 startActivityForResult(searchIntent, FILTER_REQUEST);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                fabMenu.close(true);
                 break;
         }
     }
@@ -200,11 +208,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
+        if (requestCode == FILTER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                Filter filter = (Filter) getIntent().getSerializableExtra("filter");
-
-                //TODO:: make filters
+                Filter filter = (Filter) data.getSerializableExtra("filter");
+                searchPresenter.setFilter(idLastSearch, true);
+                Snackbar.make(container, "Filtro Aplicado", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
 
             if (resultCode == Activity.RESULT_CANCELED) {

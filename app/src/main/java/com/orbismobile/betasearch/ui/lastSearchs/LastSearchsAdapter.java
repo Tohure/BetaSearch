@@ -88,6 +88,7 @@ public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.
         holder.rowContainer.setTag(R.id.idLastSearch,lastSearches.get(position).getId());
         holder.rowContainer.setTag(R.id.querySearch,lastSearches.get(position).getQuery());
         holder.rowContainer.setTag(R.id.locationSearch,lastSearches.get(position).getPlace());
+        holder.rowContainer.setTag(R.id.statusFilter,lastSearches.get(position).getFiltros());
         holder.titleSearch.setText(lastSearches.get(position).getQuery());
         holder.locationSearch.setText(" | "+lastSearches.get(position).getPlace());
 

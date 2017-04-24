@@ -37,6 +37,10 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
         searchInteractor.setAlarm(idLastSearch,b);
     }
 
+    public void setFilter(int idLastSearch, boolean filter) {
+        searchInteractor.setFilter(idLastSearch,filter);
+    }
+
     public void saveQueryinDB(String query, String location) {
         searchInteractor.saveQueryInDB(query,location,this);
     }
@@ -91,4 +95,5 @@ public class SearchPresenter implements Presenter<SearchView>, SearchCallback {
             dbHelper = null;
         }
     }
+
 }

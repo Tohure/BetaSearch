@@ -113,4 +113,9 @@ public class SearchInteractor {
         daoLastSearch.update(lastSearch);
     }
 
+    public void setFilter(int idLastSearch, boolean filter) {
+        LastSearch lastSearch = daoLastSearch.queryForId(idLastSearch);
+        lastSearch.setFiltros(filter);
+        daoLastSearch.update(lastSearch);
+    }
 }

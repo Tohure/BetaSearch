@@ -41,7 +41,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/subtitleText"
-            android:hint="Salario" />
+            android:hint="Salario"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:singleLine="true" />
+
     </RelativeLayout>
 
 
@@ -51,6 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@android:drawable/ic_menu_send" />
 
 </android.support.design.widget.CoordinatorLayout>
