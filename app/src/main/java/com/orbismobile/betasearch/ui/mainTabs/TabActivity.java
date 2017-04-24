@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.ui.activities;
+package com.orbismobile.betasearch.ui.mainTabs;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.orbismobile.betasearch.R;
-import com.orbismobile.betasearch.data.ViewPagerAdapter;
 import com.orbismobile.betasearch.ui.search.SearchBarFragment;
 
 public class TabActivity extends AppCompatActivity implements View.OnClickListener {

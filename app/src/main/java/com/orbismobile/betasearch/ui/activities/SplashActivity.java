@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.orbismobile.betasearch.R;
+import com.orbismobile.betasearch.ui.mainTabs.TabActivity;
 
 public class SplashActivity extends AppCompatActivity implements View.OnClickListener {
 

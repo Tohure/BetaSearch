@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.data;
+package com.orbismobile.betasearch.ui.search;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

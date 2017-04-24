@@ -1,5 +1,6 @@
 package com.orbismobile.betasearch.ui.search;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -16,9 +17,10 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.orbismobile.betasearch.R;
-import com.orbismobile.betasearch.data.JobsAdapter;
+import com.orbismobile.betasearch.model.db.Filter;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
 import com.orbismobile.betasearch.ui.detalleJob.DetailJobActivity;
+import com.orbismobile.betasearch.ui.filters.FilterActivity;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
     private RecyclerView list_recycler;
     private FloatingActionMenu fabMenu;
     private FloatingActionButton fabAlarm, fabFilter;
+    static final int FILTER_REQUEST = 777;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +59,16 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
         toolbar.setSubtitle(location);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { finish(); }
+            public void onClick(View view) {
+                finish();
+            }
         });
     }
 
@@ -82,26 +87,26 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
         fabFilter = (FloatingActionButton) findViewById(R.id.float_menu_filter);
         searchPresenter.getJobsSearch(query, location);
 
-        if (idLastSearch > 0){
+        if (idLastSearch > 0) {
             updateFabButtons();
         }
     }
 
     private void injectPresenter() {
         searchPresenter = new SearchPresenter();
-        searchPresenter.attachedView(this,getApplicationContext());
+        searchPresenter.attachedView(this, getApplicationContext());
     }
 
     @Override
     public void listJobsDone(List<JobSearchResponse.DataBean> jobs) {
         setupAdapter(jobs);
-        searchPresenter.saveQueryinDB(query,location);
+        searchPresenter.saveQueryinDB(query, location);
     }
 
     private void updateFabButtons() {
-        if (searchPresenter.getStatusAlarm(idLastSearch)){
+        if (searchPresenter.getStatusAlarm(idLastSearch)) {
             fabAlarm.setImageResource(R.drawable.ic_bell_active);
-        }else{
+        } else {
             fabAlarm.setImageResource(R.drawable.ic_bell_deactive);
         }
         fabAlarm.setOnClickListener(this);
@@ -118,7 +123,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
                 searchIntent.putExtra("idJob", itemView.getTag().toString());
 
                 startActivity(searchIntent);
-                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
 
@@ -171,22 +176,41 @@ public class SearchListActivity extends AppCompatActivity implements SearchView,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.float_menu_alarm:
-                if (searchPresenter.getStatusAlarm(idLastSearch)){
-                    searchPresenter.setAlarm(idLastSearch,false);
+                if (searchPresenter.getStatusAlarm(idLastSearch)) {
+                    searchPresenter.setAlarm(idLastSearch, false);
                     Toast.makeText(this, "Notificaciones Desactivadas", Toast.LENGTH_SHORT).show();
                     fabAlarm.setImageResource(R.drawable.ic_bell_deactive);
-                }else{
-                    searchPresenter.setAlarm(idLastSearch,true);
+                } else {
+                    searchPresenter.setAlarm(idLastSearch, true);
                     Toast.makeText(this, "Notificaciones Activadas para esta búsqueda", Toast.LENGTH_SHORT).show();
                     fabAlarm.setImageResource(R.drawable.ic_bell_active);
                 }
                 fabMenu.close(true);
-                Log.d("thr",""+searchPresenter.getStatusAlarm(idLastSearch));
                 break;
             case R.id.float_menu_filter:
+                Intent searchIntent = new Intent(getApplicationContext(), FilterActivity.class);
+                startActivityForResult(searchIntent, FILTER_REQUEST);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                Filter filter = (Filter) getIntent().getSerializableExtra("filter");
+
+                //TODO:: make filters
+            }
+
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+
     }
 }

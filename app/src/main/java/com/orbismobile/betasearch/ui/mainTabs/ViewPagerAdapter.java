@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.data;
+package com.orbismobile.betasearch.ui.mainTabs;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

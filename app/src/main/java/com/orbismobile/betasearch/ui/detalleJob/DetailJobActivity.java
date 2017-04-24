@@ -18,9 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.orbismobile.betasearch.R;
-import com.orbismobile.betasearch.data.RecomendsAdapter;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
-import com.orbismobile.betasearch.ui.activities.TabActivity;
+import com.orbismobile.betasearch.ui.mainTabs.TabActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

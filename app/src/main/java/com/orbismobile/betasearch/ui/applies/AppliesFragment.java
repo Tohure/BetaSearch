@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.orbismobile.betasearch.R;
-import com.orbismobile.betasearch.data.AppliesAdapter;
 import com.orbismobile.betasearch.model.db.ApplyJob;
 import com.orbismobile.betasearch.ui.detalleJob.DetailJobActivity;
 

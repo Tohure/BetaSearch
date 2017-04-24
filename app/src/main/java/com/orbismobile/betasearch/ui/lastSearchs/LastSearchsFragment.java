@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.orbismobile.betasearch.R;
-import com.orbismobile.betasearch.data.LastSearchsAdapter;
 import com.orbismobile.betasearch.model.db.LastSearch;
 import com.orbismobile.betasearch.ui.search.SearchListActivity;
 

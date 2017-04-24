@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.TabActivity" />
+        <activity android:name=".ui.mainTabs.TabActivity" />
         <activity
             android:name=".ui.search.SearchListActivity"
             android:label="@string/title_activity_search"
@@ -30,6 +30,10 @@
         <activity
             android:name=".ui.detalleJob.DetailJobActivity"
             android:label="@string/title_activity_detail_job"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.filters.FilterActivity"
+            android:label="@string/title_activity_filter"
             android:theme="@style/AppTheme"></activity>
     </application>
 

@@ -1,4 +1,4 @@
-package com.orbismobile.betasearch.data;
+package com.orbismobile.betasearch.ui.detalleJob;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
