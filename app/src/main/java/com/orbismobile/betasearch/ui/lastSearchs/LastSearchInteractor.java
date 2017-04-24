@@ -12,23 +12,29 @@ import java.util.List;
 
 public class LastSearchInteractor {
 
-    private DatabaseHelper dbHelper;
+    private RuntimeExceptionDao<LastSearch, Integer> daoLastSearch;
 
     public LastSearchInteractor(DatabaseHelper dbHelper) {
-        this.dbHelper = dbHelper;
+        this.daoLastSearch = dbHelper.getLastSearchRuntimeDAO();
     }
 
     public void listLastSearchs(final LastSearchCallback lastSearchCallback) {
-        RuntimeExceptionDao<LastSearch, Integer> daoLastSearch = dbHelper.getLastSearchRuntimeDAO();
-        List<LastSearch> lastSearchList = null;
+        List<LastSearch> lastSearchList;
         try {
             lastSearchList = daoLastSearch.queryForAll();
             lastSearchCallback.listLastSearchsSuccess(lastSearchList);
         } catch (Exception e) {
             lastSearchCallback.listLastSearchsError(e.getMessage());
         }
-
-
     }
 
+    public void deleteSearch(Integer idLastSearch,final LastSearchCallback lastSearchCallback) {
+        try {
+            daoLastSearch.deleteById(idLastSearch);
+            lastSearchCallback.deleteItemLastSucces();
+        } catch (Exception e) {
+            e.printStackTrace();
+            lastSearchCallback.deleteItemLastError(e.getMessage());
+        }
+    }
 }

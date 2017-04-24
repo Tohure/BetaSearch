@@ -1,16 +1,12 @@
 package com.orbismobile.betasearch.ui.search;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.orbismobile.betasearch.model.db.LastSearch;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
 import com.orbismobile.betasearch.utils.Presenter;
 import com.orbismobile.betasearch.utils.db.DatabaseHelper;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerCoord"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.orbismobile.betasearch.ui.detalleJob.DetailJobActivity">
@@ -115,6 +116,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        android:visibility="gone"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_action_check" />
 
 </android.support.design.widget.CoordinatorLayout>

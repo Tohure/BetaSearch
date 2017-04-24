@@ -1,14 +1,11 @@
 package com.orbismobile.betasearch.data;
 
 import android.content.Context;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,11 +22,15 @@ public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.
 
     private List<LastSearch> lastSearches;
     private Context mContext;
-    private static LastSearchsAdapter.OnItemClickListener listener;
+    private static OnItemClickListener listener;
+    private static OnItemLongClickListener longListener;
 
     public interface OnItemClickListener { void onItemClick(View itemView, int position); }
+    public interface OnItemLongClickListener { void onItemLongClick(View itemView, int position); }
+
 
     public void setOnItemClickListener(OnItemClickListener listener) { LastSearchsAdapter.listener = listener; }
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) { LastSearchsAdapter.longListener = listener; }
 
     public LastSearchsAdapter(Context mContext) {
         this.mContext = mContext;
@@ -60,6 +61,17 @@ public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.
                     if (listener != null){
                         listener.onItemClick(v,getLayoutPosition());
                     }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (longListener != null){
+                        longListener.onItemLongClick(v,getLayoutPosition());
+                        return true;
+                    }
+                    return false;
                 }
             });
         }

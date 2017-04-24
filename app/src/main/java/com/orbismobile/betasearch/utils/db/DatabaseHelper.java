@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.orbismobile.betasearch.R;
+import com.orbismobile.betasearch.model.db.ApplyJob;
 import com.orbismobile.betasearch.model.db.LastSearch;
 
 import java.sql.SQLException;
@@ -22,28 +23,27 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private RuntimeExceptionDao<LastSearch, Integer> LastSearchRuntimeDAO = null;
-
+    private RuntimeExceptionDao<ApplyJob, Integer> ApplyJobRuntimeDAO = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormliteconf);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, LastSearch.class);
+            TableUtils.createTable(connectionSource, ApplyJob.class);
         } catch (SQLException e) { e.printStackTrace(); }
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource,LastSearch.class,true);
+            TableUtils.dropTable(connectionSource,ApplyJob.class,true);
             onCreate(database, connectionSource);
         } catch (SQLException e) { throw new RuntimeException(e); }
-
     }
 
     public RuntimeExceptionDao<LastSearch, Integer> getLastSearchRuntimeDAO(){
@@ -51,13 +51,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return LastSearchRuntimeDAO;
     }
 
+    public RuntimeExceptionDao<ApplyJob, Integer> getApplyJobRuntimeDAO(){
+        if (ApplyJobRuntimeDAO == null) ApplyJobRuntimeDAO = getRuntimeExceptionDao(ApplyJob.class);
+        return ApplyJobRuntimeDAO;
+    }
+
     @Override
     public void close() {
         super.close();
 
         LastSearchRuntimeDAO = null;
-
+        ApplyJobRuntimeDAO = null;
     }
-
 
 }

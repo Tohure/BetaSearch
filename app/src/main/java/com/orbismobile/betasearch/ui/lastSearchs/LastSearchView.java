@@ -10,10 +10,11 @@ import java.util.List;
 
 public interface LastSearchView {
     void listLastSearchsDone(List<LastSearch> listLastSearchs);
-
     void listLastSearchsFail(String message);
 
     void showProgress();
-
     void hideProgress();
+
+    void deleteDoneSearch();
+    void deleteFailSearch(String message);
 }

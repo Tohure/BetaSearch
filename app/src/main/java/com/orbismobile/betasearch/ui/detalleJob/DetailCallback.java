@@ -20,4 +20,8 @@ public interface DetailCallback {
     void recoJobsError(String message);
     void recoJobsServerError(String message);
     //</editor-fold>
+
+    void applyJobError(String message);
+    void applyJobSucces();
+
 }

@@ -1,6 +1,37 @@
 #
-# generated on 2017/04/21 11:55:41
+# generated on 2017/04/23 09:21:04
 #
+# --table-start--
+dataClass=com.orbismobile.betasearch.model.db.ApplyJob
+tableName=ApplyJob
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=idJob
+columnName=idJob
+# --field-end--
+# --field-start--
+fieldName=titleJob
+columnName=titleJob
+# --field-end--
+# --field-start--
+fieldName=dateApply
+columnName=dateApply
+# --field-end--
+# --field-start--
+fieldName=placeApply
+columnName=placeApply
+# --field-end--
+# --field-start--
+fieldName=statusApply
+columnName=statusApply
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
 # --table-start--
 dataClass=com.orbismobile.betasearch.model.db.LastSearch
 tableName=LastSearch

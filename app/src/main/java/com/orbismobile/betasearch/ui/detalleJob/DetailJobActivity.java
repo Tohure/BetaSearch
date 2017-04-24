@@ -1,7 +1,9 @@
 package com.orbismobile.betasearch.ui.detalleJob;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +22,9 @@ import com.orbismobile.betasearch.data.RecomendsAdapter;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
 import com.orbismobile.betasearch.ui.activities.TabActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
-
 
 public class DetailJobActivity extends AppCompatActivity implements DetailView {
 
@@ -31,7 +34,9 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
     private TextView descriptionJob, companyJob, dateJob, placeJob, salaryJob;
     private Toolbar toolbar;
     private RecyclerView rycRecomendados;
-    private RecomendsAdapter recomendsAdapter;
+    private FloatingActionButton fab;
+    private CoordinatorLayout containerCoord;
+    private JobSearchResponse.DataBean job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,27 +44,15 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
         setContentView(R.layout.activity_detail_job);
 
         Bundle b = getIntent().getExtras();
-        if (b != null) {
-            idJob = b.getString("idJob");
-        }
+        if (b != null) { idJob = b.getString("idJob"); }
 
         initUI();
         injectPresenter();
         setupToolbar();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Postulación Correcta", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
@@ -88,6 +81,9 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
     }
 
     private void initUI() {
+        final String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+
+        containerCoord = (CoordinatorLayout) findViewById(R.id.containerCoord);
         rycRecomendados = (RecyclerView) findViewById(R.id.rycRecomendados);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -102,6 +98,14 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
         dateJob = (TextView) findViewById(R.id.dateJob);
         placeJob = (TextView) findViewById(R.id.placeJob);
         salaryJob = (TextView) findViewById(R.id.salaryJob);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                detailPresenter.applyJob(job.getId(),job.getTitle(),timeStamp,job.getPlace());
+            }
+        });
     }
 
     private void injectPresenter() {
@@ -130,6 +134,7 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
 
     @Override
     public void detailJobsDone(JobSearchResponse.DataBean job) {
+        this.job = job;
         toolbar.setTitle(job.getTitle());
         descriptionJob.setText(job.getDescription());
         companyJob.setText(job.getCompany());
@@ -138,6 +143,9 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
         salaryJob.setText("S/. " + job.getSalary());
 
         detailPresenter.getJobsRecomend(job.getKeywords(), String.valueOf(job.getId()));
+
+        if (detailPresenter.getStatusJobApply(job.getId())){ setFabGreen(); }
+        fab.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -145,8 +153,20 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
         setupAdapterRecomends(jobs);
     }
 
+    @Override
+    public void applyJobDone() {
+        Snackbar.make(containerCoord, "Postulación Correcta", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+        setFabGreen();
+    }
+
+    private void setFabGreen() {
+        fab.setOnClickListener(null);
+        fab.setImageResource(R.drawable.ic_action_double_check);
+        fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_green_light)));
+    }
+
     private void setupAdapterRecomends(List<JobSearchResponse.DataBean> jobs) {
-        recomendsAdapter = new RecomendsAdapter(jobs);
+        RecomendsAdapter recomendsAdapter = new RecomendsAdapter(jobs);
         recomendsAdapter.setOnItemClickListener(new RecomendsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -178,6 +198,11 @@ public class DetailJobActivity extends AppCompatActivity implements DetailView {
 
     @Override
     public void recoJobsError(String message) {
+
+    }
+
+    @Override
+    public void applyJobFail() {
 
     }
     //</editor-fold>

@@ -1,8 +1,14 @@
 package com.orbismobile.betasearch.ui.detalleJob;
 
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.orbismobile.betasearch.api.ApiManager;
+import com.orbismobile.betasearch.model.db.ApplyJob;
 import com.orbismobile.betasearch.model.response.JobDetailResponse;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
+import com.orbismobile.betasearch.utils.db.DatabaseHelper;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,6 +19,12 @@ import retrofit2.Response;
  */
 
 public class DetailInteractor {
+
+    private RuntimeExceptionDao<ApplyJob, Integer> daoApplyJob;
+
+    public DetailInteractor(DatabaseHelper dbHelper) {
+        this.daoApplyJob = dbHelper.getApplyJobRuntimeDAO();
+    }
 
     public void detailJob(String idjob, final DetailCallback callback){
 
@@ -52,5 +64,35 @@ public class DetailInteractor {
                 callback.recoJobsServerError(t.getMessage());
             }
         });
+    }
+
+    public void applyJob(int idJob, String title, String date, String place, final DetailCallback callback) {
+        try {
+            ApplyJob applyJob = new ApplyJob(idJob,title,date,place,true);
+            daoApplyJob.create(applyJob);
+            callback.applyJobSucces();
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.applyJobError(e.getMessage());
+        }
+    }
+
+    public boolean getStatusJobApply(int id) {
+        List<ApplyJob> applyJobs = null;
+
+        try {
+            applyJobs = daoApplyJob.queryBuilder()
+                    .where()
+                    .eq(ApplyJob.C_IDJOB, id)
+                    .query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (applyJobs != null && applyJobs.size() > 0){
+            return applyJobs.get(0).getStatusApply();
+        }else{
+            return false;
+        }
     }
 }

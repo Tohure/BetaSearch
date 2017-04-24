@@ -1,7 +1,6 @@
 package com.orbismobile.betasearch.ui.lastSearchs;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.orbismobile.betasearch.model.db.LastSearch;
@@ -26,6 +25,11 @@ public class LastSearchPresenter implements Presenter<LastSearchView>, LastSearc
         lastSearchInteractor.listLastSearchs(this);
     }
 
+    public void deleteLastSearch(Integer idLastSearch) {
+        lastSearchView.showProgress();
+        lastSearchInteractor.deleteSearch(idLastSearch,this);
+    }
+
     @Override
     public void attachedView(LastSearchView view, Context context) {
         this.lastSearchView = view;
@@ -41,6 +45,19 @@ public class LastSearchPresenter implements Presenter<LastSearchView>, LastSearc
 
     @Override
     public void listLastSearchsError(String message) {
+        lastSearchView.listLastSearchsFail(message);
+        lastSearchView.hideProgress();
+    }
+
+    @Override
+    public void deleteItemLastSucces() {
+        lastSearchView.deleteDoneSearch();
+        lastSearchView.hideProgress();
+    }
+
+    @Override
+    public void deleteItemLastError(String message) {
+        lastSearchView.deleteFailSearch(message);
         lastSearchView.hideProgress();
     }
 

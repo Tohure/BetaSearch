@@ -1,9 +1,11 @@
 package com.orbismobile.betasearch.ui.lastSearchs;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +26,6 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
 
     private LastSearchPresenter lastSearchPresenter;
     private ProgressBar progressBar;
-    private RecyclerView lastSearchRecycler;
     private View rootView;
     private LastSearchsAdapter lastSearchsAdapter;
     private List<LastSearch> lastSearchList = new ArrayList<>();
@@ -35,7 +36,6 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_searchs, container, false);
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
     private void initUI() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
-        lastSearchRecycler = (RecyclerView) rootView.findViewById(R.id.lastSearchRecycler);
+        RecyclerView lastSearchRecycler = (RecyclerView) rootView.findViewById(R.id.lastSearchRecycler);
         lastSearchRecycler.setLayoutManager(layoutManager);
         lastSearchRecycler.setHasFixedSize(true);
         lastSearchRecycler.addItemDecoration(itemDecoration);
@@ -78,8 +78,27 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
             }
         });
 
+        lastSearchsAdapter.setOnItemLongClickListener(new LastSearchsAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(final View itemView, int position) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("¿Eliminar el historial?")
+                        .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                lastSearchPresenter.deleteLastSearch((Integer) itemView.getTag(R.id.idLastSearch));
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder.create().show();
+            }
+        });
+
         lastSearchRecycler.setAdapter(lastSearchsAdapter);
-        lastSearchPresenter.getLastSearchs();
     }
 
     @Override
@@ -88,14 +107,14 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
         setupAdapter();
     }
 
+    @Override
+    public void deleteDoneSearch() {
+        lastSearchPresenter.getLastSearchs();
+    }
+
     private void setupAdapter() {
         lastSearchsAdapter.addItemList(lastSearchList);
         lastSearchsAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void listLastSearchsFail(String message) {
-
     }
 
     @Override
@@ -107,6 +126,12 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
     }
+
+    @Override
+    public void listLastSearchsFail(String message) { }
+
+    @Override
+    public void deleteFailSearch(String message) { }
 
     @Override
     public void onDestroyView() {

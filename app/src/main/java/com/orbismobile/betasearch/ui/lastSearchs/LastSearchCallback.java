@@ -11,4 +11,7 @@ import java.util.List;
 public interface LastSearchCallback {
     void listLastSearchsSuccess(List<LastSearch> lastSearchList);
     void listLastSearchsError(String message);
+
+    void deleteItemLastSucces();
+    void deleteItemLastError(String message);
 }

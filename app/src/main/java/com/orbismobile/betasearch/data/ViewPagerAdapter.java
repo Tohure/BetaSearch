@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.orbismobile.betasearch.ui.fragments.AppliesFragment;
+import com.orbismobile.betasearch.ui.applies.AppliesFragment;
 import com.orbismobile.betasearch.ui.fragments.MeFragment;
 import com.orbismobile.betasearch.ui.fragments.NotifyFragment;
 import com.orbismobile.betasearch.ui.lastSearchs.LastSearchsFragment;
@@ -43,7 +43,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         if (meFragment == null) meFragment = new MeFragment();
         return meFragment;
     }
-
 
 
     @Override

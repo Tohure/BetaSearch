@@ -2,8 +2,10 @@ package com.orbismobile.betasearch.ui.detalleJob;
 
 import android.content.Context;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.orbismobile.betasearch.model.response.JobSearchResponse;
 import com.orbismobile.betasearch.utils.Presenter;
+import com.orbismobile.betasearch.utils.db.DatabaseHelper;
 
 import java.util.List;
 
@@ -15,7 +17,17 @@ public class DetailPresenter implements Presenter<DetailView>, DetailCallback {
 
     private DetailView detailView;
     private DetailInteractor detailInteractor;
+    private DatabaseHelper dbHelper;
     private Context mContext;
+
+    public boolean getStatusJobApply(int id) {
+        return detailInteractor.getStatusJobApply(id);
+    }
+
+    public void applyJob(int idJob, String title, String date, String place) {
+        detailView.showProgress();
+        detailInteractor.applyJob(idJob,title,date,place,this);
+    }
 
     public void getJobDetail(String idjob) {
         detailView.showProgress();
@@ -31,12 +43,13 @@ public class DetailPresenter implements Presenter<DetailView>, DetailCallback {
     public void attachedView(DetailView view, Context context) {
         this.detailView = view;
         this.mContext = context;
-        detailInteractor = new DetailInteractor();
+        detailInteractor = new DetailInteractor(getHelper());
     }
 
     @Override
     public void detachView() {
         detailView = null;
+        quitHelper();
     }
 
     //<editor-fold desc="DETAIL FUNCTIONS">
@@ -74,4 +87,29 @@ public class DetailPresenter implements Presenter<DetailView>, DetailCallback {
         detailView.hideProgress();
     }
     //</editor-fold>
+
+    @Override
+    public void applyJobError(String message) {
+        detailView.applyJobFail();
+        detailView.hideProgress();
+    }
+
+    @Override
+    public void applyJobSucces() {
+        detailView.applyJobDone();
+        detailView.hideProgress();
+    }
+
+    private DatabaseHelper getHelper() {
+        if (dbHelper == null) {dbHelper = OpenHelperManager.getHelper(mContext, DatabaseHelper.class);}
+        return dbHelper;
+    }
+
+    private void quitHelper() {
+        if (dbHelper != null) {
+            OpenHelperManager.releaseHelper();
+            dbHelper = null;
+        }
+    }
+
 }

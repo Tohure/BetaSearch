@@ -26,7 +26,9 @@ public interface DetailView {
     void recoJobsError(String message);
     //</editor-fold>
 
-    void showProgress();
+    void applyJobFail();
+    void applyJobDone();
 
+    void showProgress();
     void hideProgress();
 }

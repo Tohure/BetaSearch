@@ -95,7 +95,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ItemSearchView
 
     @Override
     public int getItemCount() {
-        if (jobList.isEmpty()){
+        if (jobList == null || jobList.isEmpty()){
             return 0;
         }else {
             return jobList.size();

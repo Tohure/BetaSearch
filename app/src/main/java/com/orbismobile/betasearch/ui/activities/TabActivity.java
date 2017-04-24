@@ -21,7 +21,6 @@ public class TabActivity extends AppCompatActivity implements View.OnClickListen
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +38,6 @@ public class TabActivity extends AppCompatActivity implements View.OnClickListen
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(0);
 
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         txtSearch.setOnClickListener(this);
@@ -64,9 +62,7 @@ public class TabActivity extends AppCompatActivity implements View.OnClickListen
                 tabLayout.getTabAt(3).setIcon(R.drawable.ic_perfil);
             }
         });
-
     }
-
 
     @Override
     public void onClick(View v) {
