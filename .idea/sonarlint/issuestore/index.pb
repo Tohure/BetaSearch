@@ -7,8 +7,6 @@ P
 Mapp/src/main/java/com/orbismobile/betasearch/ui/fragments/NotifyFragment.java,a/3/a31e7a3bffc2d03036649f97462e1f0f8516cec2
 y
 Iapp/src/main/java/com/orbismobile/betasearch/ui/fragments/MeFragment.java,8/2/82e7337d06e2880d5a9d25defc1228a9d9244a8e
-~
-Napp/src/main/java/com/orbismobile/betasearch/ui/fragments/AppliesFragment.java,2/3/232563202a8737a0bd6b5c82e5caf77d40f6a540
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
@@ -24,10 +22,6 @@ W
 'app/src/main/res/layout/fragment_me.xml,e/8/e8632b1793e82f6d9fe633bd64758e0ff672026a
 S
 #app/src/main/res/values/strings.xml,d/2/d2281fbb3027de2722081a53408dd77628bf080e
-w
-Gapp/src/main/java/com/orbismobile/betasearch/data/ViewPagerAdapter.java,2/6/2638dc4b092410ca2478e23516adeae6f91bc2a1
-{
-Kapp/src/main/java/com/orbismobile/betasearch/ui/activities/TabActivity.java,f/d/fdaeb3f19757dd212ca2a6efcec43ac09db2b5da
 \
 ,app/src/main/res/layout/fragment_searchs.xml,a/0/a0dae6fa9cdaa991a21c536518ab6d2d3aa5f663
 i
@@ -38,8 +32,6 @@ p
 @app/src/main/java/com/orbismobile/betasearch/api/ApiManager.java,1/4/142f644c341d0595fc9943586a0590c202c6c847
 {
 Kapp/src/main/java/com/orbismobile/betasearch/model/request/JobsRequest.java,9/4/946517ba4ff2b7158706215f5dfa952ecb6bb73a
-r
-Bapp/src/main/java/com/orbismobile/betasearch/data/JobsAdapter.java,b/a/ba6b7f5b639506e2e0c239a890badb6a1b0839dd
 }
 Mapp/src/main/java/com/orbismobile/betasearch/ui/search/SearchBarFragment.java,6/7/6710814838962b482f046ac75bba9f3a65d5a5d6
 _
@@ -56,8 +48,6 @@ _
 Oapp/src/main/java/com/orbismobile/betasearch/ui/detalleJob/DetailPresenter.java,8/d/8dc6cb3b5198b806bb4cfc63f7854a2bbf25ea52
 ~
 Napp/src/main/java/com/orbismobile/betasearch/ui/detalleJob/DetailCallback.java,9/1/91b127633c537a07f941a226af0c6fedd1decd97
-w
-Gapp/src/main/java/com/orbismobile/betasearch/data/RecomendsAdapter.java,7/3/73a55e0b88b07263b377c8792e1392e7d70d1f64
 z
 Japp/src/main/java/com/orbismobile/betasearch/ui/detalleJob/DetailView.java,f/8/f82149d39fe03e4cc635e440e396badde1b3965f
 €
@@ -100,5 +90,5 @@ T
 $app/src/main/res/raw/ormliteconf.txt,b/0/b00ae1423b0d04120b8749364ef921d9d9ffdc4c
 „
 Tapp/src/main/java/com/orbismobile/betasearch/ui/lastSearchs/LastSearchsFragment.java,2/7/27260ff8695de1914060941334b34b513b38b362
-y
-Iapp/src/main/java/com/orbismobile/betasearch/data/LastSearchsAdapter.java,1/b/1b9d7c8120985179a3052bfdf9dbffe73ddd0a94
+~
+Napp/src/main/java/com/orbismobile/betasearch/ui/applies/AppliesInteractor.java,a/a/aa6e5da4aabc22dfcca4c4a9f7ce0d786eb0a682

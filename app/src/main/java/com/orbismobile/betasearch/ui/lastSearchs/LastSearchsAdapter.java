@@ -18,19 +18,15 @@ import java.util.List;
  * Created by tohure on 20/04/17.
  */
 
-public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.LastItemViewHolder> {
+public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.LastItemViewHolder>  {
 
     private List<LastSearch> lastSearches;
     private Context mContext;
-    private static OnItemClickListener listener;
-    private static OnItemLongClickListener longListener;
+    private static EventsListeners.OnItemClickListener listener;
+    private static EventsListeners.OnItemLongClickListener longListener;
 
-    public interface OnItemClickListener { void onItemClick(View itemView, int position); }
-    public interface OnItemLongClickListener { void onItemLongClick(View itemView, int position); }
-
-
-    public void setOnItemClickListener(OnItemClickListener listener) { LastSearchsAdapter.listener = listener; }
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) { LastSearchsAdapter.longListener = listener; }
+    public void setOnItemClickListener(EventsListeners.OnItemClickListener listener) { LastSearchsAdapter.listener = listener; }
+    public void setOnItemLongClickListener(EventsListeners.OnItemLongClickListener listener) { LastSearchsAdapter.longListener = listener; }
 
     public LastSearchsAdapter(Context mContext) {
         this.mContext = mContext;

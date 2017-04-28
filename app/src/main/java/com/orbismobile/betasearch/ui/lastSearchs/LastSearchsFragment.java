@@ -64,7 +64,7 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         lastSearchsAdapter = new LastSearchsAdapter(getContext());
-        lastSearchsAdapter.setOnItemClickListener(new LastSearchsAdapter.OnItemClickListener() {
+        lastSearchsAdapter.setOnItemClickListener(new EventsListeners.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
                 Intent searchIntent = new Intent(getContext(), SearchListActivity.class);
@@ -78,7 +78,7 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
             }
         });
 
-        lastSearchsAdapter.setOnItemLongClickListener(new LastSearchsAdapter.OnItemLongClickListener() {
+        lastSearchsAdapter.setOnItemLongClickListener(new EventsListeners.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(final View itemView, int position) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
