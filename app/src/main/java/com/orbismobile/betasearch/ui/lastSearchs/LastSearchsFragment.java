@@ -63,7 +63,7 @@ public class LastSearchsFragment extends Fragment implements LastSearchView {
         lastSearchRecycler.addItemDecoration(itemDecoration);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
-        lastSearchsAdapter = new LastSearchsAdapter(getContext());
+        lastSearchsAdapter = new LastSearchsAdapter();
         lastSearchsAdapter.setOnItemClickListener(new EventsListeners.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

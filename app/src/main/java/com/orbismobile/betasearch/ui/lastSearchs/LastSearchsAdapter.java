@@ -21,16 +21,13 @@ import java.util.List;
 public class LastSearchsAdapter extends RecyclerView.Adapter<LastSearchsAdapter.LastItemViewHolder>  {
 
     private List<LastSearch> lastSearches;
-    private Context mContext;
     private static EventsListeners.OnItemClickListener listener;
     private static EventsListeners.OnItemLongClickListener longListener;
 
     public void setOnItemClickListener(EventsListeners.OnItemClickListener listener) { LastSearchsAdapter.listener = listener; }
     public void setOnItemLongClickListener(EventsListeners.OnItemLongClickListener listener) { LastSearchsAdapter.longListener = listener; }
 
-    public LastSearchsAdapter(Context mContext) {
-        this.mContext = mContext;
-    }
+    public LastSearchsAdapter() { }
 
     public void addItemList(List<LastSearch> lastSearches){
         this.lastSearches = lastSearches;
